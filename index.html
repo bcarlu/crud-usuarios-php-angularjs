@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de usuarios</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Usuarios</h1>
+        <div class="alert alert-success" role="alert">
+            <p>Here start the Coolest</p>
+        </div>
+        
+        <div ng-app="registroUsuarios" ng-controller="controladorUsuarios">
+            <form>
+                <div class="form-group">
+                  <label for="nombre">Nombre</label>
+                  <input type="text" class="form-control" id="nombre" placeholder="Escriba el nombre completo" ng-model="nombre">
+                </div>
+                <div class="form-group">
+                  <label for="correo">Correo</label>
+                  <input type="text" class="form-control" id="correo" placeholder="Escriba el correo" ng-model="correo">
+                </div>
+                <div class="form-group">
+                    <label for="celular">Celular</label>
+                    <input type="number" class="form-control" id="celular" placeholder="Escriba el numero celular" ng-model="celular">
+                </div>                
+                <button type="button" class="btn btn-primary">Registrar usuario</button>
+            </form>
+            
+            <br><br>
+            <table class="table table-bordered table-hover">
+            <tr>
+                <th ng-click="orderByMe('nombre')" style="cursor: pointer">Nombre</th>
+                <th ng-click="orderByMe('correo')" style="cursor: pointer">Correo</th>
+                <th ng-click="orderByMe('celular')" style="cursor: pointer">Celular</th>
+            </tr>
+            <tr ng-repeat="x in usuarios | orderBy:myOrderBy">
+                <td>{{x.nombre}}</td>
+                <td>{{x.correo}}</td>
+                <td>{{x.celular}}</td>
+            </tr>
+            </table>
+            
+        </div>
+    </div>
+        
+    <script>
+        angular.module('registroUsuarios', []).controller('controladorUsuarios', function($scope, $http) {
+            $http.get("listar_usuarios.php").then(function(response) {
+                console.log(response.data);
+                $scope.usuarios = response.data;
+            });
+            
+            $scope.orderByMe = function(x) {
+                $scope.myOrderBy = x;
+            }
+        });
+    </script>
+</body>
+</html>
